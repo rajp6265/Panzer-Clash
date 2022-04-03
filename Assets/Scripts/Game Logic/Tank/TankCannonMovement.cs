@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class TankCannonMovement : MonoBehaviour
 {
 
     [SerializeField]
-    private float _rotationSpeed = 20f;
+    private float _rotationSpeed = 40f;
     [SerializeField]
     private Transform _cannon;
     [SerializeField]
@@ -15,20 +16,24 @@ public class TankCannonMovement : MonoBehaviour
 
     private TankData _tankData;
 
+    private Vector3 finalPosition;
     private void Awake()
     {
         _tankData = GetComponentInParent<TankData>();
     }
-    private void OnEnable()
+    private void Start()
     {
         GameEvents.OnTankCannonMovementChanged += ChangeTankCannonMovement;
         GameEvents.OnShootButtonPressed += Shoot;
+        GameEvents.OnSurfaceFound += SurfaceFound;
 
     }
-    private void OnDisable()
+
+    private void OnDestroy()
     {
         GameEvents.OnTankCannonMovementChanged -= ChangeTankCannonMovement;
         GameEvents.OnShootButtonPressed -= Shoot;
+        GameEvents.OnSurfaceFound -= SurfaceFound;
     }
 
     void ChangeTankCannonMovement(Vector2 input)
@@ -58,10 +63,14 @@ public class TankCannonMovement : MonoBehaviour
     {
         if (!_tankData.IsCurrentlyActive)
             return;
-        Debug.Log("bullet");
         TankBullet bullet = Instantiate(_bulletPrefab, _tankData.CannonTip.position, Quaternion.identity, transform);
         bullet.transform.forward = _tankData.CannonTip.transform.forward;
-        bullet.SetForceValue(_tankData.ForceValue);
+        bullet.SetData(_tankData.ForceValue, _tankData.TimeValue, _tankData);
+    }
+
+    private void SurfaceFound(TrailSphere obj)
+    {
+        finalPosition = obj.transform.position;
     }
 
 }

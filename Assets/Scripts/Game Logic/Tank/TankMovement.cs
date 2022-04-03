@@ -4,7 +4,7 @@ using UnityEngine;
 public class TankMovement : MonoBehaviour
 {
     [SerializeField]
-    private float _movementSpeed = 5.0f;
+    private float _movementSpeed = 25.0f;
     [SerializeField]
     private float _rotationSpeed = 200.0f;
 

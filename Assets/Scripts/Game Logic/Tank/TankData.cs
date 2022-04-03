@@ -4,6 +4,9 @@ public class TankData : MonoBehaviour
 {
     [SerializeField]
     private float _parabolicTimeValue;
+    [SerializeField]
+    private Color _tankColor;
+    public Color TankColor => _tankColor;
     public float TimeValue => _parabolicTimeValue;
     [SerializeField]
     private float _forceValue;
@@ -22,3 +25,4 @@ public class TankData : MonoBehaviour
         _isCurrentlyActivate = status;
     }
 }
+
